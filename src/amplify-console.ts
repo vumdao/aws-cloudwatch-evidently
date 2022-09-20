@@ -27,13 +27,6 @@ export class AmplifyConsoleReactStack extends Stack {
       }),
       buildSpec: BuildSpec.fromObjectToYaml({
         version: '1.0',
-        backend: {
-          phases: {
-            build: {
-              commands:['amplifyPush --simple']
-            }
-          }
-        },
         frontend: {
           phases: {
             preBuild: {
