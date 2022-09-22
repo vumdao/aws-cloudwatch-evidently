@@ -23,7 +23,7 @@
 ---
 
 ## 🚀 **Overview of Cloudwatch evidently** <a name="Overview-of-Cloudwatch-evidently"></a>
-- You can use Amazon CloudWatch Evidently to safely validate new features by serving them to a specified percentage of your users while you roll out the feature. You can monitor the performance of the new feature to help you decide when to ramp up traffic to your users. This helps you reduce risk and identify unintended consequences before you fully launch the feature.
+- You can use [Amazon CloudWatch Evidently](https://aws.amazon.com/cloudwatch/features/) to safely validate new features by serving them to a specified percentage of your users while you roll out the feature. You can monitor the performance of the new feature to help you decide when to ramp up traffic to your users. This helps you reduce risk and identify unintended consequences before you fully launch the feature.
 - Evidently structure
   - Project: The logical object in Evidently that can contain features, launches, and experiments. Use projects to group similar features together. We can store evaluation events for longer term storage by using cloudwatch log or S3 bucket
   - Feature: represents a feature that you want to launch or that you want to test variations of.
@@ -272,7 +272,7 @@
 
   <img src=images/error-denied.png width=1100>
 
-  It's due to the identity pool default Authenticated role which is assumed by cognito userpool does not have permission to work with Cloudwatch evidently, we need to provide `AmazonCloudWatchEvidentlyFullAccess` and also S3 permision to push data event storage to S3 bucket
+  It's due to the identity pool default Authenticated role which is assumed by cognito userpool does not have permission to work with Cloudwatch evidently, we need to provide `AmazonCloudWatchEvidentlyFullAccess` and also S3 permision to push data event storage to S3 bucket. To limit the application permission toward cloudwatch evidently, read [Actions, resources, and condition keys for Amazon CloudWatch Evidently](https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazoncloudwatchevidently.html#amazoncloudwatchevidently-actions-as-permissions) to create proper policy for the role
 
   <img src=images/idp.png width=1100>
 
@@ -295,7 +295,8 @@
 
 ---
 
-References:
+**References:**
+- [New – Amazon CloudWatch Evidently – Experiments and Feature Management](https://aws.amazon.com/blogs/aws/cloudwatch-evidently/)
 - [[New feature] Support feature flags and A/B testing! Amazon CloudWatch Evidently was released, so I tried it #reinvent](https://dev.classmethod.jp/articles/amazon-cloudwatch-evidently-ga/)
 
 ---
