@@ -76,7 +76,7 @@ export class CloudwatchEvidentlyStack extends Stack {
           groupWeights: [
             {
               groupName: 'test-launch-1',
-              splitWeight: 20000,
+              splitWeight: 10000,
             },
             {
               groupName: 'test-launch-2',

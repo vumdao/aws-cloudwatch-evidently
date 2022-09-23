@@ -46,6 +46,6 @@ export class AmplifyConsoleReactStack extends Stack {
         },
       }),
     });
-    amplifyApp.addBranch('master');
+    amplifyApp.addBranch('main');
   }
 }
