@@ -1,16 +1,16 @@
 import { App } from 'aws-cdk-lib';
 import { AmplifyConsoleReactStack } from './amplify-console';
-import { CloudwatchEvidentlyStack } from './evidently';
+import { EvidentlyPipelineStack } from './pipeline';
 import { devEnv } from './shared/environment';
 import { TagsProp } from './shared/tagging';
 
 const app = new App();
 
-new CloudwatchEvidentlyStack(app, 'CloudwatchEvidentlyStack', devEnv, {
-  description: 'Cloudwatch Evidently demo',
+new EvidentlyPipelineStack(app, 'EvidentlyPipelineStack', devEnv, {
+  description: 'Evidently pipeline',
   env: devEnv,
-  tags: TagsProp('cloudwatch-evidently', devEnv)
-})
+  tags: TagsProp('evidently', devEnv)
+});
 
 new AmplifyConsoleReactStack(app, 'AmplifyConsoleReactStack', devEnv, {
   description: 'Amplify console for hosting react app',

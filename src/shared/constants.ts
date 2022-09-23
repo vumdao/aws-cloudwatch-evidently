@@ -13,5 +13,3 @@ export const STAGE = 'stage';
 
 export const DEV_STAGE = 'development';
 export const PROD_STAGE = 'production';
-
-export const DOZER_JOB_SA = 'dozer-job';
