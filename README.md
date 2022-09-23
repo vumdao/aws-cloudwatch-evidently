@@ -4,7 +4,7 @@
   </a>
 </p>
 <h1 align="center">
-  <div><b>Keda ScaledObject As Code Using CDK8S</b></div>
+  <div><b>CDK AWS Cloudwatch Evidently Demo</b></div>
 </h1>
 
 ## Abstract
