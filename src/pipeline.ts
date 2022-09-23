@@ -21,7 +21,7 @@ export class EvidentlyPipelineStack extends Stack {
         pipelineName: `${prefix}-${branch}`,
         synth: new CodeBuildStep('SynthStep', {
           input: CodePipelineSource.codeCommit(repo, branch),
-          installCommands: ['npm install -g aws-cdk'],
+          installCommands: ['npm install -g aws-cdk projen', 'npm install -g projen'],
           commands: [
             'yarn install --frozen-lockfile',
             'npx projen build',
