@@ -80,7 +80,7 @@ export class CloudwatchEvidentlyStack extends Stack {
             },
             {
               groupName: 'test-launch-2',
-              splitWeight: 80000,
+              splitWeight: 90000,
             },
           ],
           startTime: new Date().toISOString(),
