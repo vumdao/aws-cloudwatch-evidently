@@ -1,9 +1,9 @@
-import { Stack, StackProps } from "aws-cdk-lib";
-import { Repository } from "aws-cdk-lib/aws-codecommit";
-import { CodeBuildStep, CodePipeline, CodePipelineSource } from "aws-cdk-lib/pipelines";
-import { Construct } from "constructs";
-import { EvidentlyPipelineStage } from "./pipeline-stages";
-import { EnvironmentConfig } from "./shared/environment";
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { Repository } from 'aws-cdk-lib/aws-codecommit';
+import { CodeBuildStep, CodePipeline, CodePipelineSource } from 'aws-cdk-lib/pipelines';
+import { Construct } from 'constructs';
+import { EvidentlyPipelineStage } from './pipeline-stages';
+import { EnvironmentConfig } from './shared/environment';
 
 export class EvidentlyPipelineStack extends Stack {
   constructor(scope: Construct, id: string, reg: EnvironmentConfig, props: StackProps) {
@@ -21,23 +21,23 @@ export class EvidentlyPipelineStack extends Stack {
         pipelineName: `${prefix}-${branch}`,
         synth: new CodeBuildStep('SynthStep', {
           input: CodePipelineSource.codeCommit(repo, branch),
-          installCommands: ['npm install -g aws-cdk projen', 'npm install -g projen'],
+          installCommands: ['npm install -g aws-cdk'],
           commands: [
-            'yarn install --frozen-lockfile',
+            'yarn install',
             'npx projen build',
             'npx projen synth',
           ],
         }),
       });
-      return _pipeline
-    }
+      return _pipeline;
+    };
 
     const masterPipeline = genPipeline(this, 'master');
     masterPipeline.addStage(new EvidentlyPipelineStage(this, 'DeployMaster', reg, {
       env: {
         account: this.account,
-        region: this.region // should be DEV_REGION or PROD_REGION
-      }
-    }))
+        region: this.region, // should be DEV_REGION or PROD_REGION
+      },
+    }));
   }
 }

@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { config } from 'dotenv';
-import { EnvironmentConfig } from './environment';
 import { LOCATION, OWNER, SERVICE, STACK_NAME, STAGE } from './constants';
+import { EnvironmentConfig } from './environment';
 
 config({ path: resolve(__dirname, '../.env') });
 

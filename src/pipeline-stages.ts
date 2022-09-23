@@ -10,7 +10,7 @@ export class EvidentlyPipelineStage extends Stage {
 
     new CloudwatchEvidentlyStack(this, 'CloudwatchEvidentlyStack', reg, {
       env: props?.env,
-      tags: TagsProp('evidently', reg)
+      tags: TagsProp('evidently', reg),
     });
   }
 }

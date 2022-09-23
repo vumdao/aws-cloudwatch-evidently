@@ -1,9 +1,9 @@
-import { Stack, StackProps, SecretValue } from "aws-cdk-lib";
-import { Construct } from "constructs";
-import { EnvironmentConfig } from "./shared/environment";
-import { App, GitHubSourceCodeProvider } from "@aws-cdk/aws-amplify-alpha";
-import { BuildSpec } from "aws-cdk-lib/aws-codebuild";
-import { Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
+import { App, GitHubSourceCodeProvider } from '@aws-cdk/aws-amplify-alpha';
+import { Stack, StackProps, SecretValue } from 'aws-cdk-lib';
+import { BuildSpec } from 'aws-cdk-lib/aws-codebuild';
+import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Construct } from 'constructs';
+import { EnvironmentConfig } from './shared/environment';
 
 export class AmplifyConsoleReactStack extends Stack {
   constructor(scope: Construct, id: string, reg: EnvironmentConfig, props: StackProps) {
@@ -14,7 +14,7 @@ export class AmplifyConsoleReactStack extends Stack {
     const role = new Role(this, `${prefix}-amplify-console-app`, {
       roleName: `${prefix}-amplify-console-app`,
       assumedBy: new ServicePrincipal('amplify.amazonaws.com'),
-      managedPolicies: [{managedPolicyArn: 'arn:aws:iam::aws:policy/AdministratorAccess-Amplify'}]
+      managedPolicies: [{ managedPolicyArn: 'arn:aws:iam::aws:policy/AdministratorAccess-Amplify' }],
     });
 
     const amplifyApp = new App(this, `${prefix}-amplify-console`, {
@@ -23,7 +23,7 @@ export class AmplifyConsoleReactStack extends Stack {
       sourceCodeProvider: new GitHubSourceCodeProvider({
         owner: 'vumdao',
         repository: 'aws-cloudwatch-evidently-react',
-        oauthToken: SecretValue.secretsManager('github-token', {jsonField: 'github-token'})
+        oauthToken: SecretValue.secretsManager('github-token', { jsonField: 'github-token' }),
       }),
       buildSpec: BuildSpec.fromObjectToYaml({
         version: '1.0',
@@ -38,13 +38,13 @@ export class AmplifyConsoleReactStack extends Stack {
           },
           artifacts: {
             baseDirectory: 'build',
-            files: ['**/*']
+            files: ['**/*'],
           },
           cache: {
-            paths: ['node_modules/**/*']
-          }
+            paths: ['node_modules/**/*'],
+          },
         },
-      })
+      }),
     });
     amplifyApp.addBranch('master');
   }

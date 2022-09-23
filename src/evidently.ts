@@ -1,9 +1,9 @@
-import { RemovalPolicy, Stack, StackProps } from "aws-cdk-lib";
-import { CfnExperiment, CfnFeature, CfnLaunch, CfnProject } from "aws-cdk-lib/aws-evidently";
-import { BlockPublicAccess, Bucket, BucketEncryption } from "aws-cdk-lib/aws-s3";
-import { Construct } from "constructs";
-import { EnvironmentConfig } from "./shared/environment";
-import { InsideTags } from "./shared/tagging";
+import { RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
+import { CfnExperiment, CfnFeature, CfnLaunch, CfnProject } from 'aws-cdk-lib/aws-evidently';
+import { BlockPublicAccess, Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
+import { Construct } from 'constructs';
+import { EnvironmentConfig } from './shared/environment';
+import { InsideTags } from './shared/tagging';
 
 export class CloudwatchEvidentlyStack extends Stack {
   constructor(scope: Construct, id: string, reg: EnvironmentConfig, props: StackProps) {
@@ -16,16 +16,16 @@ export class CloudwatchEvidentlyStack extends Stack {
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       encryption: BucketEncryption.S3_MANAGED,
       removalPolicy: RemovalPolicy.DESTROY,
-      enforceSSL: true
+      enforceSSL: true,
     });
 
     const proj = new CfnProject(this, `${prefix}-evidently-demo`, {
       description: 'S3 bucket to store evidently project evaluation events',
       name: `${prefix}-evidently-demo`,
       dataDelivery: {
-        s3: {bucketName: s3.bucketName}
+        s3: { bucketName: s3.bucketName },
       },
-      tags: InsideTags('evidently', reg)
+      tags: InsideTags('evidently', reg),
     });
 
     const feature = new CfnFeature(this, `${prefix}-evaluation-demo`, {
@@ -33,12 +33,12 @@ export class CloudwatchEvidentlyStack extends Stack {
       name: `${prefix}-evaluation-demo`,
       project: proj.name,
       variations: [
-        {booleanValue: false, variationName: 'Variation1'},
-        {booleanValue: true, variationName: 'Variation2'}
+        { booleanValue: false, variationName: 'Variation1' },
+        { booleanValue: true, variationName: 'Variation2' },
       ],
       defaultVariation: 'Variation1',
       evaluationStrategy: 'ALL_RULES',
-      tags: InsideTags('evidently', reg)
+      tags: InsideTags('evidently', reg),
     });
     feature.node.addDependency(proj);
 
@@ -47,12 +47,12 @@ export class CloudwatchEvidentlyStack extends Stack {
       name: `${prefix}-evaluation-exp`,
       project: proj.name,
       variations: [
-        {booleanValue: false, variationName: 'Variation1'},
-        {booleanValue: true, variationName: 'Variation2'}
+        { booleanValue: false, variationName: 'Variation1' },
+        { booleanValue: true, variationName: 'Variation2' },
       ],
       defaultVariation: 'Variation1',
       evaluationStrategy: 'ALL_RULES',
-      tags: InsideTags('evidently', reg)
+      tags: InsideTags('evidently', reg),
     });
     featureExp.node.addDependency(proj);
 
@@ -63,13 +63,13 @@ export class CloudwatchEvidentlyStack extends Stack {
         {
           groupName: 'test-launch-1',
           feature: feature.name,
-          variation: 'Variation1'
+          variation: 'Variation1',
         },
         {
           groupName: 'test-launch-2',
           feature: feature.name,
-          variation: 'Variation2'
-        }
+          variation: 'Variation2',
+        },
       ],
       scheduledSplitsConfig: [
         {
@@ -83,26 +83,26 @@ export class CloudwatchEvidentlyStack extends Stack {
               splitWeight: 80000,
             },
           ],
-          startTime: new Date().toISOString()
-        }
+          startTime: new Date().toISOString(),
+        },
       ],
-      executionStatus: {status: 'START'},
-      tags: InsideTags('evidently', reg)
+      executionStatus: { status: 'START' },
+      tags: InsideTags('evidently', reg),
     });
     launch.node.addDependency(feature);
 
     const eventPattern = {
       entityId: [
         {
-          exists: true
-        }
+          exists: true,
+        },
       ],
       ['details.loadTime']: [
         {
-          exists: true
-        }
-      ]
-    }
+          exists: true,
+        },
+      ],
+    };
 
     const exp = new CfnExperiment(this, `${prefix}-experiment`, {
       name: `${prefix}-experiment`,
@@ -113,39 +113,39 @@ export class CloudwatchEvidentlyStack extends Stack {
         entityIdKey: 'entityId',
         metricName: 'load-time-in-second',
         eventPattern: JSON.stringify(eventPattern),
-        valueKey: "details.loadTime",
-        unitLabel: 'Second'
+        valueKey: 'details.loadTime',
+        unitLabel: 'Second',
       }],
       onlineAbConfig: {
         controlTreatmentName: `${prefix}-experiment-treatment-1`,
         treatmentWeights: [
           {
             splitWeight: 50000,
-            treatment: `${prefix}-experiment-treatment-1`
+            treatment: `${prefix}-experiment-treatment-1`,
           },
           {
             splitWeight: 50000,
-            treatment: `${prefix}-experiment-treatment-2`
-          }
-        ]
+            treatment: `${prefix}-experiment-treatment-2`,
+          },
+        ],
       },
       treatments: [
         {
           treatmentName: `${prefix}-experiment-treatment-1`,
           feature: featureExp.name,
-          variation: 'Variation1'
+          variation: 'Variation1',
         },
         {
           treatmentName: `${prefix}-experiment-treatment-2`,
           feature: featureExp.name,
-          variation: 'Variation2'
-        }
+          variation: 'Variation2',
+        },
       ],
       runningStatus: {
         status: 'START',
-        analysisCompleteTime: '2022-09-27T06:47:03.387Z'
-      }
+        analysisCompleteTime: '2022-09-27T06:47:03.387Z',
+      },
     });
-    exp.node.addDependency(featureExp)
+    exp.node.addDependency(featureExp);
   }
 }

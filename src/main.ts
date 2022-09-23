@@ -9,11 +9,11 @@ const app = new App();
 new EvidentlyPipelineStack(app, 'EvidentlyPipelineStack', devEnv, {
   description: 'Evidently pipeline',
   env: devEnv,
-  tags: TagsProp('evidently', devEnv)
+  tags: TagsProp('evidently', devEnv),
 });
 
 new AmplifyConsoleReactStack(app, 'AmplifyConsoleReactStack', devEnv, {
   description: 'Amplify console for hosting react app',
-  env: devEnv
-})
+  env: devEnv,
+});
 app.synth();
